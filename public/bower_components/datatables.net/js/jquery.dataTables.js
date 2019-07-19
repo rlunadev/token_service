@@ -11456,8 +11456,8 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfo": " _START_ al  _END_ de _TOTAL_",
-	
+			//"sInfo": " _START_ al  _END_ de _TOTAL_",//Agregar de nuevo
+			"sInfo": "",
 	
 			/**
 			 * Display information string for when the table is empty. Typically the
@@ -11617,7 +11617,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sLengthMenu": "_MENU_ registros",
+			"sLengthMenu": " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	   _MENU_ registros",
 	
 	
 			/**

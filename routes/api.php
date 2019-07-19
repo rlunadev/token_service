@@ -12,6 +12,9 @@ Route::get('RedirectToServer', 'InicioController@RedirectToServer');
 Route::post('register', 'AuthController@register');
 Route::post('login', 'AuthController@login');
 Route::post('recover', 'AuthController@recover');
+// get sistema by id 
+Route::post('getSistemaByName', 'SistemasController@getSistemaByName');
+
 Route::group(['middleware' => ['jwt.auth']], function() {
 
     Route::get('logout', 'AuthController@logout');

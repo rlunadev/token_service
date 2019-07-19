@@ -15,7 +15,7 @@
 	<link rel="stylesheet" href="{{asset('dist/css/skins/_all-skins.min.css')}}">
   <script src="{{asset('bower_components/jquery/dist/jquery.min.js')}}"></script>
 </head>
-<body class="hold-transition skin-green sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini">
 	@include('template.partials.nav')
 	@include('template.partials.menu-izquierda')
 	<section>

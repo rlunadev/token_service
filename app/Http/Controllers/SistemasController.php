@@ -14,10 +14,6 @@ class SistemasController extends Controller
     }
 
     public function index(Request $request) {
-       // config()->set('currency', "yo");
-       // dd($request);
-     //   $currenc = config('currency');
-      //  dd($currenc);
         return view('sistemas.index');
     }
 
@@ -27,6 +23,11 @@ class SistemasController extends Controller
             'success'=>true,
             'data'=> [ 'data' => $data]
         ]);
+    }
+
+    public function GetSistemaByName(Request $request) {
+        $data=Sistema::Where('nombre', '=',$request->nombre)->get();
+        return response()->json(['success'=>true,'data'=>['data'=>$data]]);
     }
 
     public function DeleteById(Request $request){

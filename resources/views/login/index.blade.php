@@ -63,7 +63,6 @@ $("#password").keypress(function(e) {
 });
 $("#errores").hide();
 $("#enviar").click(function() {
-    
     $.ajax({
         type: 'POST',
         url:{!!json_encode(url('/'))!!}+'/api/login',
@@ -72,14 +71,15 @@ $("#enviar").click(function() {
         password:$("#password").val() 
         },
         success: function(result) {
-            console.log(result);
             if(result.success){
-                localStorage.setItem('token',result.data.token);
-                window.location.href =   sessionStorage.getItem('ruta_inicial')+"?token="+result.data.token;
+              localStorage.setItem('token',result.data.token);
+              var url = new URL(location.href);
+              getSistemByName(url.searchParams.get("ruta"));
             }
-            else
-                message=result.error;
-                showError(message)
+            else {
+              message=result.error;
+              showError(message)
+            }
             
         },
         error: function(e) {
@@ -87,8 +87,35 @@ $("#enviar").click(function() {
             showError(message)
         }
     });
+
+    function getSistemByName(nombreSistema) {
+      $.ajax({
+        type: 'POST',
+        url:{!!json_encode(url('/'))!!}+'/api/getSistemaByName',
+        data: { 
+          nombre: nombreSistema
+        },
+        success: function(result) {
+            if(result.success) {
+              debugger;
+                window.location.href = result.data.data[0].ruta + "?token=" + localStorage.getItem('token');
+            } else {
+              message=e.responseJSON.error;
+              showError(message)
+            }            
+        },
+        error: function(e) {
+            message=e.responseJSON.error;
+            showError(message)
+        }
+    });
+      
+    }
    
 });
+
+
+
 function showError(message){
     $("#errores").after("<div class='alert alert-danger alert-dismissible'><ul><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><p id='msj_errores'> "+message+" </p> </ul></div>");
 }
