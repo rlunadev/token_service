@@ -17,6 +17,6 @@ class Grupo extends Authenticatable
         return $this->belongsTo('App\Empresa');
     }
     public function usuario(){
-        return $this->hasMany('App\User');
+        return $this->hasMany('App\Sistema');
     }
 }

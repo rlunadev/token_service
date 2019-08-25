@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
-use App\Sistemas;
+use App\Grupo;
+use App\Sistema;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Validator;
@@ -91,13 +92,29 @@ class AuthController extends Controller
         $data->each(function($data){
             $data->sistemaRegistro;
         });
-       // dd($data[0]->sistemaRegistro->nombre,$data[0]->name);
-    //    $ids=$data[0]->sistemaRegistro->sistema_id;
-         $custom = [];
-    //         'empresa' =>[ 'id'=>$data[0]->sistemaRegistro->id,'nombre'=>$data[0]->sistemaRegistro->nombre, 'usuario'=>$data[0]->name],
-    //         'sistemas' => ['sistemas'=>$ids]
-    //     ];
+        
+        $listGroupId = explode(',', $data[0]->grupo_id);
+        $listGroup =array();
+        // newGroup
+        foreach($listGroupId as $idg) {
+            $grupo = Grupo::where('id','=', $idg)->get();
+            array_push($listGroup,$grupo);
+        }
 
+        $listCodeNameSistemas =array();
+        foreach($listGroup as $g) {
+            $sistema = Sistema::where('id','=', $g[0]->sistema_id)->get();
+            array_push($listCodeNameSistemas,['id'=>$sistema[0]->id, 'nombre'=>$sistema[0]->nombre]);
+        }
+        
+        //load data to payload token
+        $custom = [];
+        foreach($listCodeNameSistemas as $codeName) {
+            //dd($codeName['id']);
+            $listPermission = ['id'=>$codeName['id'], 'nombre'=>$codeName['nombre']];
+            array_push($custom,$listPermission);
+        }         
+        array_push($custom,[$data[0]->name]);
         try {
             if (! $token = JWTAuth::attempt($credentials,$custom)) {
                 return response()->json(['success' => false, 'error' => 'Credenciales invalidos.'], 401);

@@ -89,6 +89,9 @@ $("#enviar").click(function() {
     });
 
     function getSistemByName(nombreSistema) {
+      if(nombreSistema == null || nombreSistema!= undefined){
+        nombreSistema = 'usuarios'
+      }
       $.ajax({
         type: 'POST',
         url:{!!json_encode(url('/'))!!}+'/api/getSistemaByName',
