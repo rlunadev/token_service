@@ -36,20 +36,9 @@ class AuthController extends Controller
         $password = $request->password;
         $grupo_id = $request->grupo_id;
         $user = User::create(['name' => $name, 'email' => $email, 'password' => Hash::make($password) ,'grupo_id'=>$grupo_id]);
-        //send by E-MAIL
-        // $verification_code = str_random(30); //Generate verification code
-        // DB::table('user_verifications')->insert(['user_id'=>$user->id,'token'=>$verification_code]);
-        // $subject = "Confirmacion de registro a J.B.B.L.";
-        // Mail::send('verify', ['name' => $name, 'verification_code' => $verification_code],
-        //     function($mail) use ($email, $name, $subject){
-        //         $mail->from("ronaldluna17@gmail.com", "J.B.B.L.");
-        //         $mail->to($email, $name);
-        //         $mail->subject($subject);
-        //     });
-
         return response()->json(['success'=> true, 'data'=> $user]);
     }
-    //////
+    
     public function verifyUser($verification_code) {
         $check = DB::table('user_verifications')->where('token',$verification_code)->first();
         if(!is_null($check)){
@@ -108,23 +97,25 @@ class AuthController extends Controller
         }
         
         //load data to payload token
-        $custom = [];
+        
+        $listGrupo = array();
         foreach($listCodeNameSistemas as $codeName) {
-            //dd($codeName['id']);
-            $listPermission = ['id'=>$codeName['id'], 'nombre'=>$codeName['nombre']];
-            array_push($custom,$listPermission);
-        }         
-        array_push($custom,[$data[0]->name]);
+            $permission = ['id'=>$codeName['id'], 'nombre'=>$codeName['nombre']];
+            array_push($listGrupo,$permission);
+        }
+        $custom = [
+            'permiso' =>['grupos'=>$listGrupo],
+            'usuario'=>$data[0]->name,
+            'rol'=>$data[0]->type
+        ];
+        
         try {
             if (! $token = JWTAuth::attempt($credentials,$custom)) {
                 return response()->json(['success' => false, 'error' => 'Credenciales invalidos.'], 401);
             }
         } catch (JWTException $e) {
-            return response()->json(['success' => false, 'error' => 'could_not_create_token'], 500);
+            return response()->json(['success' => false, 'error' => 'no se pudo crear'], 500);
         }
-        // $id_empresa=JWTAuth::getPayload($token)->get('empresa.id');
-        // $id_usuario=JWTAuth::getPayload($token)->get('empresa.usuario');
-        // dd($id_empresa,$id_usuario);
         return response()->json(['success' => true, 'data'=> [ 'token' => $token]]);
     }
 
@@ -148,7 +139,7 @@ class AuthController extends Controller
             Password::sendResetLink($request->only('email'), function (Message $message) {
                 $message->subject('enviamos un link para renovar su contrase;a');
             });
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             //Return with error
             $error_message = $e->getMessage();
             return response()->json(['success' => false, 'error' => $error_message], 401);

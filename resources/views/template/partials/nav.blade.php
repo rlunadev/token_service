@@ -15,15 +15,22 @@
     <span class="icon-bar"></span>
     <span class="icon-bar"></span>
   </a>
-      <a href="http://localhost:8000/inventario/public/"  class="btn bg-blue margin">
+      {{-- <a href="http://localhost:8000/inventario/public/"  class="btn bg-blue margin">
       <i class="fa fa-inbox"></i> Stock
       </a>
-      <a href="http://localhost:8000/calculo/public/"  class="btn bg-blue margin">
+       --}}
+      {{-- <a href="http://localhost:8000/calculo/public/"  class="btn bg-blue margin">
       <i class="fa fa fa-cogs"></i> Calculo
       </a>
       <a href="http://localhost:8000/token_service/public/"  class="btn bg-blue margin">
       <i class="fa fa-user"></i> Usuarios
-      </a>
+      </a> --}}
+
+      <button class="btn bg-blue margin" onclick="navigateToOtherModule('inventario')"><i class="fa fa-inbox"></i> Stock  </button>
+      <button class="btn bg-blue margin" onclick="navigateToOtherModule('calculo')"><i class="fa fa-inbox"></i> Calculo  </button>
+      <button class="btn bg-blue margin" onclick="navigateToOtherModule('usuarios')"><i class="fa fa-user"></i> Usuarios  </button>
+      <button class="btn bg-blue margin" onclick="navigateToOtherModule('fases')"><i class="fa fa-user"></i> Fases  </button>
+
   <div class="navbar-custom-menu">
     <ul class="nav navbar-nav">
       <!-- Messages: style can be found in dropdown.less-->
@@ -62,6 +69,12 @@ else {
   localStorage.setItem('menu',0);
   $('body').attr('class','hold-transition skin-blue sidebar-mini sidebar-collapse');
 }
-//verifyMenu();
 });
+
+function navigateToOtherModule(name) {
+  if(name != 'usuarios')
+  window.location = "http://localhost:8000/proyecto/"+name+"/public/home?token="+localStorage.getItem('token');
+  else
+  window.location = "http://localhost:9000/home?token="+localStorage.getItem('token');
+} 
 </script>

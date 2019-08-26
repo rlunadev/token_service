@@ -100,7 +100,6 @@ $("#enviar").click(function() {
         },
         success: function(result) {
             if(result.success) {
-              debugger;
                 window.location.href = result.data.data[0].ruta + "?token=" + localStorage.getItem('token');
             } else {
               message=e.responseJSON.error;

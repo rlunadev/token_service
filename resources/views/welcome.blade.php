@@ -83,7 +83,6 @@
             type: 'GET',
             url:{!!json_encode(url('/'))!!}+"/api/RedirectToServer",
             success: function(result) {
-                debugger;
                 sessionStorage.setItem('servidor_logueo',result[0].servidor_logueo);
                 sessionStorage.setItem('ruta_inicial',result[0].ruta_inicial);
                 if(localStorage.getItem('token')!=undefined && sessionStorage.getItem('ruta_inicial')!=undefined)
