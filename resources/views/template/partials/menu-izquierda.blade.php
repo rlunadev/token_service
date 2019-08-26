@@ -7,8 +7,6 @@
           <br>
         </div>
         <div class="pull-left info">
-          
-          
         </div>
       </div>
       <!-- search form -->
@@ -23,45 +21,76 @@
       </form>
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
-      <ul class="sidebar-menu" data-widget="tree" id="menuIzquierda">
-      @if(Auth::user()->admin())
+      
+      <ul class="sidebar-menu" data-widget="tree" id="menutoken">
+      <!-- roles -->
+      <div  class="sidebar-menu" data-widget="tree"  id="roles" style="display:none"> <!-- style="display:none"  -->
         <li>
-          <a href="" value="users">
-            <i class="fa fa-user"></i> <span>Usuarios</span>
-          </a>
-        </li>
-        <li>
-          <a href="" value="roles">
-            <i class="fa fa-laptop"></i> <span>Roles</span>
+          <a href="" value="categoria">
+            <i class="fa fa-briefcase"></i> <span>Categorias</span>
           </a>
         </li> 
         <li>
-          <a href="" value="grupos">
-            <i class="fa fa-laptop"></i> <span>Grupos</span>
+          <a href="" value="unidad">
+            <i class="fa fa-clone"></i> <span>Unidades</span>
+          </a>
+        </li>    
+<!-- 
+        <li class="treeview">
+          <a href="">
+            <i class="fa fa-pie-chart"></i>
+            <span>Salidas</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+          
+          </ul>
+        </li> -->
+        <li><a href="" value="salida"><i class="fa fa-sign-out"></i> <span>Nueva Salida</span></a></li>
+          <li><a href="" value="salidaLista"><i class="fa fa-server"></i> <span>Listar Salidas</span></a></li>
+        <li>
+          <a href="" value="item">
+            <i class="fa fa-shopping-cart"></i> <span>Productos</span>
           </a>
         </li> 
-      @endif
-        <li>
-          <a href="" value="sistema">
-            <i class="fa fa-laptop"></i> <span>Sistemas</span>
-          </a>
-        </li>
-        <li>
+        <!-- <li>
           <a href="" value="empresa">
             <i class="fa fa-laptop"></i> <span>Empresa</span>
           </a>
-        </li>
-       
-        
+        </li>  -->
+        </div>
       </ul>
     </section>
     <!-- /.sidebar -->
   </aside>
   <script>
-  $("#menuIzquierda li a").hover(function(){
-     var url=window.location.origin+"/"+$(this).attr('value')+"?token="+localStorage.getItem('token');
-     
+  $("#menutoken li a").hover(function(){
+     var url=window.location.origin+"/proyecto/inventario/public/"+$(this).attr('value')+"?token="+localStorage.getItem('token');
      $(this).attr('href',url);
-     console.log($(this));
     });
+
+    setMenu ();
+    function setMenu (){
+      $.ajax({
+        type: 'POST',
+        url:{!!json_encode(url('/'))!!}+"/api/setMenu?token="+localStorage.getItem('token'),
+        data:{},
+        success: function(result) {
+                if(result.data=="stock"){
+                  $("#roles").show();
+                } 
+         $("#usuarioSistema").html("Hola, "+result.user);
+        },
+        error: function(e) {}
+      });
+    }
+
+    function navigateToOtherModule(name) {
+    if(name != 'usuarios')
+      window.location = "http://localhost:8000/proyecto/"+name+"/public/home?token="+localStorage.getItem('token');
+    else
+      window.location = "http://localhost:9000/home?token="+localStorage.getItem('token');
+    } 
   </script>

@@ -23,10 +23,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $user = 'ronald Luna';
-        
-            config([
-                'currency' => $user
-            ]);
+        //
     }
 }

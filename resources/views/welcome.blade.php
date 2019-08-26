@@ -5,10 +5,10 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Inventario</title>
+        <title>STOCK</title>
 
         <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+        <!-- <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css"> -->
 
         <!-- Styles -->
         <style>
@@ -69,30 +69,38 @@
         <div class="flex-center position-ref full-height">
             <div class="content">
                 <div class="title m-b-md">
-                    TOKEN SERVICE
+                    Stock
                 </div>
             </div>
         </div>
     </body>
     <script src="{{asset('bower_components/jquery/dist/jquery.min.js')}}"></script>
     <script>
-    //Redirect 
+    //Redirect      
     getAll();
+
     function getAll(){
         $.ajax({
             type: 'GET',
             url:{!!json_encode(url('/'))!!}+"/api/RedirectToServer",
             success: function(result) {
-                debugger;
-                sessionStorage.setItem('servidor_logueo',result[0].servidor_logueo);
-                sessionStorage.setItem('ruta_inicial',result[0].ruta_inicial);
-                if(localStorage.getItem('token')!=undefined && sessionStorage.getItem('ruta_inicial')!=undefined)
-                window.location.href =  sessionStorage.getItem('ruta_inicial')+'?token='+localStorage.getItem('token');
-                if(sessionStorage.getItem('token')==undefined)
-                window.location.href =  sessionStorage.getItem('servidor_logueo');
+                sessionStorage.setItem('ruta_inicial', result[0].ruta_inicial);
+                sessionStorage.setItem('servidor_logueo',result[0].servidor_logueo+'?ruta=stock');
+
+                var ruta_inicial = sessionStorage.getItem('ruta_inicial');
+                var servidor_logueo = sessionStorage.getItem('servidor_logueo');
+                var token = localStorage.getItem('token');
+                if(token!=undefined && ruta_inicial!=undefined) {
+                    window.location.href = ruta_inicial+'home?token=' + token;
+                }
+                if(localStorage.getItem('token')==undefined) {
+                    window.location.href = servidor_logueo;
+                }
             },
-            error: function(e) {}
+            error: function(e) {
+                console.log("error");
+            }
         });
-    }
+    }   
     </script>
 </html>

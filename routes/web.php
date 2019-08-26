@@ -2,44 +2,53 @@
 
 use Illuminate\Http\Request;
 
-Route::get('user/verify/{verification_code}', 'AuthController@verifyUser');
+	Route::get('/', function () {
+		return view('welcome');
+	});
+	Route::get('/null', function () {
+		return view('welcome');
+	});
 
-Route::get('/', function () {
-	return view('welcome');
-});
-Route::get('registro',[
-	'as'=>'registro.index',
-	'uses'=>'AuthController@registro'
-	]);
-Route::get('admin',[
-	'as'=>'admin.index',
-	'uses'=>'AuthController@admin'
-	]);
+	Route::get('home','InicioController@index');
 
-Route::group(['middleware' => ['jwt.auth']], function() {
-	Route::get('logout', 'AuthController@logout');
+	Route::get('admin',[
+		'as'=>'admin.index',
+		'uses'=>'AuthController@admin'
+		]);
+		Route::get('configuration',[
+			'as'=>'configuration.index',
+			'uses'=>'ConfigurationController@index'
+		]);
+
+	Route::group(['middleware' => ['jwt.auth']], function() {
+		Route::get('empresa', 'EmpresaController@index');
+		Route::get('home','InicioController@index');	
+		
+		Route::get('categoria','CategoriaController@index');
+
+		Route::get('unidad',[
+			'as'=>'unidad.index',
+			'uses'=>'UnidadController@index'
+		]);
 	
-   
-	//users
-	Route::resource('users','UsersController');
-	// Route::get('users/{id}/destroy',[
-	// 	'uses'=>'UsersController@destroy',
-	// 	'as'=>'users.destroy'
-	// ]);
-	//Sistemas
-	Route::get('sistema', 'SistemasController@index');
-	Route::get('home', 'HomeController@index');
-	//Empresas
-	Route::get('empresa', 'EmpresaController@index');
-	//Sistemas Registrados
-	Route::get('sistemaRegistrado', 'SistemaRegistradoController@index');
-	Route::get('roles', 'RolController@index');
-	Route::get('grupos', 'GrupoController@index');
+		Route::get('proveedor',[
+			'as'=>'proveedor.index',
+			'uses'=>'ProveedorController@index'
+		]);
 
-});
+		Route::get('compra',[
+			'as'=>'compra.index',
+			'uses'=>'CompraController@index'
+		]);
+		Route::get('salida',[
+			'as'=>'salida.index',
+			'uses'=>'SalidaController@index'
+		]);
+		Route::get('salidaLista', 'SalidaDetalleController@listaSalida');
 
+		Route::get('item',[
+			'as'=>'item.index',
+			'uses'=>'ItemController@index'
+		]);
 
-Route::get('login',[
-	'as'=>'login.index',
-	'uses'=>'AuthController@index'
-	]);
+	});

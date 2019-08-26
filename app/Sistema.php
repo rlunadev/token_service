@@ -11,7 +11,4 @@ class Sistema extends Model
     protected $fillable = [
         'nombre', 'ruta', 'token'
     ];
-    public function sistemaRegistrado() {
-    	return $this->hasMany('App\SistemaRegistrado');
-    }
 }

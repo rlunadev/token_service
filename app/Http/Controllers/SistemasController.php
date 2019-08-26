@@ -7,13 +7,15 @@ use App\Sistema;
 
 class SistemasController extends Controller
 {
+
     public function SaveData (Request $request) {
         $data=new Sistema($request->all());
         $data->save();
+        //dd($data);
         return response()->json(['result'=>$data]);
     }
 
-    public function index(Request $request) {
+    public function index() {
         return view('sistemas.index');
     }
 
@@ -23,11 +25,6 @@ class SistemasController extends Controller
             'success'=>true,
             'data'=> [ 'data' => $data]
         ]);
-    }
-
-    public function GetSistemaByName(Request $request) {
-        $data=Sistema::Where('nombre', '=',$request->nombre)->get();
-        return response()->json(['success'=>true,'data'=>['data'=>$data]]);
     }
 
     public function DeleteById(Request $request){

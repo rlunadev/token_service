@@ -9,22 +9,21 @@ class User extends Authenticatable
 {
     use Notifiable;
     protected $table="users";
-
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
-        'name', 'email','password','grupo_id','is_verified'
+        'name', 'email','password','is_verified'
     ];
 
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
     protected $hidden = [
         'password', 'remember_token',
     ];
-
-    public function sistemaRegistro(){
-        return $this->belongsTo('App\SistemaRegistrado');
-    }
-    public function grupo(){
-        return $this->belongsTo('App\Grupo');
-    }
-    public function admin() {
-        return $this->type==='admin';
-    }
 }

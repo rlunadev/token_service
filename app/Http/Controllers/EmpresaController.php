@@ -16,7 +16,7 @@ class EmpresaController extends Controller
         return view('empresa.index');
     }
 
-    public function GetAll(Request $request){
+    public function GetAll(){
         $data=Empresa::all();//->take(10);
         return response()->json([
             'success'=>true,

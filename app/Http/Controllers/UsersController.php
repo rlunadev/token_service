@@ -5,7 +5,6 @@ use JWTAuth;
 use Illuminate\Http\Request;
 
 use App\User;
-use App\Grupo;
 use Exception;
 class UsersController extends Controller
 {
@@ -14,8 +13,21 @@ class UsersController extends Controller
     }
 
     public function SaveData (UserRequest $request) {
-        $user=new User($request->all());
-        $user->password= Hash::make($password);
+         $user=new User($request->all());
+         $user->password= Hash::make($password);
+        // dd($user,$request);
+
+        // $name = $request->name;
+        // $email = $request->email;
+        // $password = $request->password;
+        // $user = User::create([
+        //     'name' => $name,
+        //     'email' => $email,
+        //     'password' => Hash::make($password)
+        //     ]);
+
+        // $verification_code = str_random(30);
+
     	$user->save();
         return response()->json(['success'=>true]);
     }
@@ -27,7 +39,6 @@ class UsersController extends Controller
 
     public function GetAll(){
         $data=User::all();//->take(10);
-        
         return response()->json([
             'success'=>true,
             'data'=> [ 'data' => $data]
@@ -44,8 +55,8 @@ class UsersController extends Controller
             return response()->json(['success'=>'Error']);
     }
 
-    public function GetById(Request $request){
-        $data=User::find($request->id);
+    public function GetById($id){
+        $data=User::find($id);
         return response()->json(['success'=>true,'data'=>['data'=>$data]]);
     }
 

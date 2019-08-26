@@ -8,59 +8,64 @@ Route::get('/null', function () {
   return view('welcome');
 });
 Route::get('RedirectToServer', 'InicioController@RedirectToServer');
-// Route::post('/', 'AuthController@register');
-Route::post('register', 'AuthController@register');
-Route::post('login', 'AuthController@login');
-Route::post('recover', 'AuthController@recover');
-// get sistema by id 
-Route::post('getSistemaByName', 'SistemasController@getSistemaByName');
 
+Route::get('test','AlmacenController@test');
 Route::group(['middleware' => ['jwt.auth']], function() {
-
-    Route::get('logout', 'AuthController@logout');
-    Route::get('admin',[
-		'as'=>'admin.index',
-		'uses'=>'AuthController@admin'
-    ]);
-    //******* USERS ******//
-    Route::post('users/GetAll', 'UsersController@GetAll');
-    Route::post('users/DeleteById', 'UsersController@DeleteById');
-    Route::post('users/GetById', 'UsersController@GetById');
-
-    //******* SISTEMAS ******//
-     Route::get('sistemas/GetAll', 'SistemasController@GetAll');
-     Route::post('sistemas/DeleteById', 'SistemasController@DeleteById');
-     Route::post('sistemas/SaveData', 'SistemasController@SaveData');
-     Route::post('sistemas/GetById', 'SistemasController@GetById');
-     Route::post('sistemas/Update', 'SistemasController@Update');
-     //******* SISTEMAS REGISTRADOS******//
-     Route::get('sistemaRegistrado/GetAll', 'SistemaRegistradoController@GetAll');
-     Route::post('sistemaRegistrado/DeleteById', 'SistemaRegistradoController@DeleteById');
-     Route::post('sistemaRegistrado/SaveData', 'SistemaRegistradoController@SaveData');
-     Route::post('sistemaRegistrado/GetById', 'SistemaRegistradoController@GetById');
-     Route::post('sistemaRegistrado/Update', 'SistemaRegistradoController@Update');
-     /*service for inventario*/
-     Route::post('sistemaRegistrado/GetByTokenId', 'SistemaRegistradoController@GetByTokenId');
+Route::get('almacen', 'AlmacenController@test');
+Route::post('setMenu', 'InicioController@setMenu');
      //******* EMPRESAS ******//
-     Route::post('empresa/GetAll', 'EmpresaController@GetAll');
-     Route::post('empresa/DeleteById', 'EmpresaController@DeleteById');
-     Route::post('empresa/SaveData', 'EmpresaController@SaveData');
-     Route::post('empresa/GetById', 'EmpresaController@GetById');
-     Route::post('empresa/Update', 'EmpresaController@Update');
-     //******* ROLES ******//
-     Route::post('roles/GetAll', 'RolController@GetAll');
-     Route::post('roles/DeleteById', 'RolController@DeleteById');
-     Route::post('roles/SaveData', 'RolController@SaveData');
-     Route::post('roles/GetById', 'RolController@GetById');
-     Route::post('roles/Update', 'RolController@Update');
-     //******* GRUPOS ******//
-     Route::post('grupos/GetAll', 'GrupoController@GetAll');
-     Route::post('grupos/GetSelect', 'GrupoController@GetSelect');
-     Route::post('grupos/DeleteById', 'GrupoController@DeleteById');
-     Route::post('grupos/SaveData', 'GrupoController@SaveData');
-     Route::post('grupos/GetById', 'GrupoController@GetById');
-     Route::post('grupos/Update', 'GrupoController@Update');
-     
+    Route::get('empresa/GetAll', 'EmpresaController@GetAll');
+    Route::post('empresa/DeleteById', 'EmpresaController@DeleteById');
+    Route::post('empresa/SaveData', 'EmpresaController@SaveData');
+    Route::post('empresa/GetById', 'EmpresaController@GetById');
+    Route::post('empresa/Update', 'EmpresaController@Update');
+    //******* CATEGORIA ******//
+    Route::get('categoria/GetAll', 'CategoriaController@GetAll');
+    Route::post('categoria/DeleteById', 'CategoriaController@DeleteById');
+    Route::post('categoria/SaveData', 'CategoriaController@SaveData');
+    Route::post('categoria/GetById', 'CategoriaController@GetById');
+    Route::post('categoria/Update', 'CategoriaController@Update');
+    //******* UNIDAD ******//
+    Route::get('unidad/GetAll', 'UnidadController@GetAll');
+    Route::post('unidad/DeleteById', 'UnidadController@DeleteById');
+    Route::post('unidad/SaveData', 'UnidadController@SaveData');
+    Route::post('unidad/GetById', 'UnidadController@GetById');
+    Route::post('unidad/Update', 'UnidadController@Update');
+    //******* PROVEEDOR ******//
+    Route::get('proveedor/GetAll', 'ProveedorController@GetAll');
+    Route::post('proveedor/DeleteById', 'ProveedorController@DeleteById');
+    Route::post('proveedor/SaveData', 'ProveedorController@SaveData');
+    Route::post('proveedor/GetById', 'ProveedorController@GetById');
+    Route::post('proveedor/Update', 'ProveedorController@Update');
+    //******* COMPRA ******//
+    // Route::get('compra/GetAll', 'CompraController@GetAll');
+    // Route::post('compra/DeleteById', 'CompraController@DeleteById');
+    // Route::post('compra/SaveData', 'CompraController@SaveData');
+    // Route::post('compra/GetById', 'CompraController@GetById');
+    // Route::post('compra/Update', 'CompraController@Update');
+    //******* ITEM ******//
+    Route::post('item/GetAll', 'ItemController@GetAll');
+    Route::post('item/DeleteById', 'ItemController@DeleteById');
+    Route::post('item/SaveData', 'ItemController@SaveData');
+    Route::post('item/GetById', 'ItemController@GetById');
+    Route::post('item/Update', 'ItemController@Update');
+    Route::post('item/GetByEmpresaId', 'ItemController@GetByEmpresaId');
 
-});
-//Route::get('asdf', 'UsersController@GetAll');
+    //******* SALIDA ******//
+    Route::get('salida/GetAll', 'SalidaController@GetAll');
+    Route::post('salida/DeleteById', 'SalidaController@DeleteById');
+    Route::post('salida/SaveData', 'SalidaController@SaveData');
+    Route::post('salida/GetById', 'SalidaController@GetById');
+    Route::post('salida/Update', 'SalidaController@Update');
+    Route::post('salida/GetByEmpresaId', 'SalidaController@GetByEmpresaId');
+    //******* SALIDA DETALLE******//
+    Route::get('salidaDetalle/GetAll', 'SalidaDetalleController@GetAll');
+    Route::post('salidaDetalle/DeleteById', 'SalidaDetalleController@DeleteById');
+    Route::post('salidaDetalle/SaveData', 'SalidaDetalleController@SaveData');
+    Route::post('salidaDetalle/GetById', 'SalidaDetalleController@GetById');
+    Route::post('salidaDetalle/Update', 'SalidaDetalleController@Update');
+    Route::post('salidaDetalle/GetByEmpresaId', 'SalidaDetalleController@GetByEmpresaId');
+    /********EXTERNAL CALCULATE****/
+    Route::post('salidaDetalle/salidaItemCalculo', 'SalidaDetalleController@salidaItemCalculo');
+     
+ });

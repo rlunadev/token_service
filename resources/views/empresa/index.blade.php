@@ -22,9 +22,9 @@
                 <thead>
                 <tr>
                   <th>Nombre</th>
-                  <th>Direccion</th>
-                  <th>Email</th>
-                  <th>Telefono</th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
                   <th></th>
                 </tr>
                 </thead>
@@ -40,7 +40,7 @@
 					
 				</div>
 				<div class="col-md-6 text-right">
-					<button class="btn btn-primary" data-toggle='modal' data-target='#modal-add'> <span class="glyphicon glyphicon-plus"></span>Agregar</button>
+					<!-- <button class="btn btn-primary" data-toggle='modal' data-target='#modal-add'> <span class="glyphicon glyphicon-plus"></span>Agregar</button> -->
 				</div>
 			<br><br>
 		</div>
@@ -49,9 +49,9 @@
 
 <script src="{{asset('bower_components/jquery/dist/jquery.min.js')}}"></script>
 <script src="{{asset('bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
-<script src="{{asset('bower_components/datatables.net/js/jquery.dataTables.js')}}"></script>
-<script src="{{asset('bower_components/datatables.net-bs/js/dataTables.bootstrap.js')}}"></script>
-<script src="{{asset('dist/js/adminlte.min.js')}}"></script>
+<script src="{{asset('bower_components/datatables.net/js/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js')}}"></script>
+<!-- <script src="{{asset('dist/js/adminlte.min.js')}}"></script> -->
 
 <script>
 var auxId='';
@@ -64,14 +64,15 @@ var auxId='';
 function getAll(){
 	$.ajax({
 		type: 'POST',
-		url:{!!json_encode(url('/'))!!}+"/api/empresa/GetAll?token="+localStorage.getItem('token'),
+		url:"http://localhost:8000/token_service/public/api/sistemaRegistrado/GetByTokenId?token="+localStorage.getItem('token'),
 		success: function(result) {
-			$.each(result.data, function() {
-				$.each(this, function(index, value) {
-            		var newItem = $("<tr  id='trId_"+value.id+"' role='row' class='odd'><td class='sorting_1'> <input type='hidden'>" + value.nombre + "</td><td>" + value.direccion+" </td><td>" + value.email+" </td><td>" + value.telefono+" </td><td class='text-right'><button type='button' class='btn btn-default btn-sm'  onclick='editFromTable("+value.id+")' data-href='"+value.id+"'  data-toggle='modal' data-target='#modal-edit' > Editar </button> <button type='button' class='btn btn-default btn-sm'  onclick='deleteFromTable("+value.id+")' data-href='"+value.id+"' data-toggle='modal' data-target='#confirm-modal'> Borrar </button></td></tr>");
+
+			//$.each(result.data, function() {
+				//$.each(this, function(index, value) {
+        	var newItem = $("<tr  id='trId_"+result.data.data.id+"' role='row' class='odd'><td class='sorting_1'> <input type='hidden'>" + result.data.data.nombre + "</td><td> </td><td></td><td></td><td class='text-right'><button type='button' class='btn btn-default btn-sm'  onclick='editFromTable("+result.data.data.id+")' data-href='"+result.data.data.id+"'  data-toggle='modal' data-target='#modal-edit' > View </button></td></tr>");
 					$("#table1 tbody").append(newItem);
-				});
-			});
+				//});
+			//});
       $('#table1').DataTable()
 		},
 		error: function(e) {}
@@ -92,18 +93,16 @@ function deleteById (id){
 	});
 }
 //Save Data
-function SaveData (nombre,direccion,email,telefono){
+function SaveData (nombre,ruta){
 	$.ajax({
 		type: 'POST',
 		url:{!!json_encode(url('/'))!!}+"/api/empresa/SaveData?token="+localStorage.getItem('token'),
     data:{
       nombre:nombre,
-      direccion:direccion,
-      email:email,
-      telefono:telefono
+      ruta:ruta
     },
 		success: function(result) {
-      var newItem = $("<tr  id='trId_"+result.result.id+"' role='row' class='odd'><td class='sorting_1'> <input type='hidden'>" +result.result.nombre + "</td><td>" + result.result.direccion+" </td><td>" + result.result.email+" </td><td>" + result.result.telefono+" </td><td class='text-right'><button type='button' class='btn btn-default btn-sm' onclick='editFromTable("+result.result.id+")' data-href='"+result.result.id+"'  data-toggle='modal' data-target='#modal-edit' > Editar </button> <button type='button' class='btn btn-default btn-sm' onclick='deleteFromTable("+result.result.id+")' data-href='"+result.result.id+"' data-toggle='modal' data-target='#confirm-modal'> Borrar </button></td></tr>");
+      var newItem = $("<tr  id='trId_"+result.result.id+"' role='row' class='odd'><td class='sorting_1'> <input type='hidden'>" +result.result.nombre + "</td><td>" + result.result.direccion+" </td><td>" + result.result.email+" </td><td>" + result.result.telefono+" </td><td class='text-right'><button type='button' class='btn btn-default btn-sm' onclick='editFromTable("+result.result.id+")' data-href='"+result.result.id+"'  data-toggle='modal' data-target='#modal-edit' > Edit </button> <button type='button' class='btn btn-default btn-sm' onclick='deleteFromTable("+result.result.id+")' data-href='"+result.result.id+"' data-toggle='modal' data-target='#confirm-modal'> Delete </button></td></tr>");
 					$("#table1 tbody").append(newItem);
           clear();
 		},
@@ -114,7 +113,7 @@ function SaveData (nombre,direccion,email,telefono){
 function GetById (id){
 	$.ajax({
 		type: 'POST',
-		url:{!!json_encode(url('/'))!!}+"/api/empresa/GetById?token="+localStorage.getItem('token'),
+		url:"http://localhost:8000/token_service/public/api/sistemaRegistrado/GetById?token="+localStorage.getItem('token'),
     data:{
       id:id
     },
@@ -168,8 +167,8 @@ $(document).on('click', '#okey', function (e) {
 });
 //
 $(document).on('click', '#okeyAdd', function (e) {
-  SaveData($("#nombre").val(),$("#direccion").val(),$("#email").val(),$("#telefono").val());
-    //$("#trId_"+auxId).remove();
+  SaveData($("#nombre").val(),$("#ruta").val());
+    $("#trId_"+auxId).remove();
 });
 $(document).on('click', '#okeyEdit', function (e) {
   update($("#nombreEdit").val(),$("#direccionEdit").val(), $("#emailEdit").val(),$("#telefonoEdit").val());
@@ -237,7 +236,7 @@ function clear(){
             <label>Nombre</label>
             <input type="text" id="nombreEdit" class="form-control" value="">
           </div>
-          <div class="form-group">
+          <!-- <div class="form-group">
               <label>Direccion</label>
               <input type="text"id="direccionEdit" class="form-control" value="">
           </div>
@@ -248,11 +247,11 @@ function clear(){
           <div class="form-group">
               <label>Telefono</label>
               <input type="text"id="telefonoEdit" class="form-control" value="">
-          </div>
+          </div> -->
         </div>
         <div class="modal-footer">
-        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" id="okeyEdit" >Actualizar</button>
+        <!-- <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button> -->
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="okeyEdit1" >Cerrar</button>
         </div>
       </div>
     </div>

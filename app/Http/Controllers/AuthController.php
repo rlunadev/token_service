@@ -109,12 +109,13 @@ class AuthController extends Controller
         
         //load data to payload token
         $custom = [];
-        foreach($listCodeNameSistemas as $codeName) {
-            //dd($codeName['id']);
-            $listPermission = ['id'=>$codeName['id'], 'nombre'=>$codeName['nombre']];
-            array_push($custom,$listPermission);
-        }         
-        array_push($custom,[$data[0]->name]);
+        // foreach($listCodeNameSistemas as $codeName) {
+        //     //dd($codeName['id']);
+        //     $listPermission = ['id'=>$codeName['id'], 'nombre'=>$codeName['nombre']];
+        //     array_push($custom,$listPermission);
+        // }         
+        // array_push($custom,['usuario'=>$data[0]->name]);
+        
         try {
             if (! $token = JWTAuth::attempt($credentials,$custom)) {
                 return response()->json(['success' => false, 'error' => 'Credenciales invalidos.'], 401);

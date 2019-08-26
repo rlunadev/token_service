@@ -9,7 +9,11 @@ class Empresa extends Model
     protected $table="empresas";
     protected $fillable=['nombre','direccion','email','telefono'];
 
-    public function grupo() {
-    	return $this->hasMany('App\Grupo');
+    public function item() {
+    	return $this->hasMany('App\Item');
     }
+    public function salida() {
+    	return $this->hasMany('App\Salida');
+    }
+
 }
