@@ -12,7 +12,7 @@
         </div>
       </div>
       <!-- search form -->
-      <form action="#" method="get" class="sidebar-form">
+      {{-- <form action="#" method="get" class="sidebar-form">
         <div class="input-group">
           <input type="text" name="q" class="form-control" placeholder="Search...">
           <span class="input-group-btn">
@@ -20,7 +20,7 @@
                 </button>
               </span>
         </div>
-      </form>
+      </form> --}}
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree" id="menuIzquierda">
@@ -32,26 +32,26 @@
         </li>
         <li>
           <a href="" value="roles">
-            <i class="fa fa-laptop"></i> <span>Roles</span>
+            <i class="fa fa-vcard"></i> <span>Roles</span>
           </a>
         </li> 
         <li>
           <a href="" value="grupos">
-            <i class="fa fa-laptop"></i> <span>Grupos</span>
+            <i class="fa fa-window-restore"></i> <span>Grupos</span>
           </a>
         </li> 
-      @endif
         <li>
           <a href="" value="sistema">
-            <i class="fa fa-laptop"></i> <span>Sistemas</span>
+            <i class="fa fa-id-card-o"></i> <span>Sistemas</span>
           </a>
         </li>
         <li>
           <a href="" value="empresa">
-            <i class="fa fa-laptop"></i> <span>Empresa</span>
+            <i class="fa fa-bars"></i> <span>Empresa</span>
           </a>
         </li>
        
+      @endif
         
       </ul>
     </section>
@@ -60,8 +60,22 @@
   <script>
   $("#menuIzquierda li a").hover(function(){
      var url=window.location.origin+"/"+$(this).attr('value')+"?token="+localStorage.getItem('token');
-     
      $(this).attr('href',url);
-     console.log($(this));
     });
+
+    setMenu ();
+    function setMenu (){
+      $.ajax({
+        type: 'POST',
+        url:{!!json_encode(url('/'))!!}+"/api/setMenu?token="+localStorage.getItem('token'),
+        data:{},
+        success: function(result) {
+                if(result.data=="calculo"){
+                  $("#roles").show();
+                } 
+         $("#usuarioSistema").html("Hola, "+result.user);
+        },
+        error: function(e) {}
+      });
+    }
   </script>

@@ -165,6 +165,7 @@ function GetById (id){
 }
 //Save Data
 function SaveData (name,email,password,password_confirmation,select_grupos){
+  console.log(name,email,password,password_confirmation,select_grupos)
 	$.ajax({
 		type: 'POST',
 		url:{!!json_encode(url('/'))!!}+"/api/register",
@@ -186,10 +187,9 @@ function SaveData (name,email,password,password_confirmation,select_grupos){
       showError(message);
       message='';
       }
-
-      var newItem = $("<tr  id='trId_"+result.result.id+"' role='row' class='odd'><td class='sorting_1'> <input type='hidden'>" +result.result.nombre + "</td><td>" + result.result.descripcion+" </td><td class='text-right'><button type='button' class='btn btn-default btn-sm' onclick='editFromTable("+result.result.id+")' data-href='"+result.result.id+"'  data-toggle='modal' data-target='#modal-edit' > Edit </button> <button type='button' class='btn btn-default btn-sm' onclick='deleteFromTable("+result.result.id+")' data-href='"+result.result.id+"' data-toggle='modal' data-target='#confirm-modal'> Delete </button></td></tr>");
+      var newItem = $("<tr  id='trId_"+result.data.id+"' role='row' class='odd'><td class='sorting_1'> <input type='hidden'>" +result.data.nombre + "</td><td>" + result.data.descripcion+" </td><td class='text-right'><button type='button' class='btn btn-default btn-sm' onclick='editFromTable("+result.data.id+")' data-href='"+result.data.id+"'  data-toggle='modal' data-target='#modal-edit' > Edit </button> <button type='button' class='btn btn-default btn-sm' onclick='deleteFromTable("+result.data.id+")' data-href='"+result.data.id+"' data-toggle='modal' data-target='#confirm-modal'> Delete </button></td></tr>");
 					$("#table1 tbody").append(newItem);
-          clear();
+          clearSelect();
 
 		},
 		error: function(e) {}
@@ -197,6 +197,7 @@ function SaveData (name,email,password,password_confirmation,select_grupos){
 }
 
 $(document).on('click', '#okeyAdd', function (e) {
+
   SaveData($("#nombre").val(),$("#email").val(),$("#password").val(),$("#password_verification").val(),$("#select_grupos").val());
   //  $("#trId_"+auxId).remove();
 });
@@ -230,11 +231,11 @@ $(document).on('click', '#okeyAdd', function (e) {
               <!-- select -->
               <div class="form-group">
                 <label>Password</label>
-                <input type="password" class="form-control" id="password" placeholder="********">
+                <input type="password" class="form-control" id="passwordEdit" placeholder="********">
               </div>
               <div class="form-group">
                 <label>Verifique Password </label>
-                <input type="password" class="form-control" id="password_verification" placeholder="********">
+                <input type="password" class="form-control" id="password_verificationEdit" placeholder="********">
               </div>   
 
 				      <div class="form-group">

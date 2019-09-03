@@ -16,7 +16,7 @@ Route::post('recover', 'AuthController@recover');
 Route::post('getSistemaByName', 'SistemasController@getSistemaByName');
 
 Route::group(['middleware' => ['jwt.auth']], function() {
-
+  Route::post('setMenu', 'InicioController@setMenu');
     Route::get('logout', 'AuthController@logout');
     Route::get('admin',[
 		'as'=>'admin.index',

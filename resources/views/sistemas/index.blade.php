@@ -38,7 +38,7 @@
 					
 				</div>
 				<div class="col-md-6 text-right">
-					<button class="btn btn-primary" data-toggle='modal' data-target='#modal-add'> <span class="glyphicon glyphicon-plus"></span>Agregar</button>
+					<button class="btn btn-primary" onclick="addButton()" data-toggle='modal' data-target='#modal-add'> <span class="glyphicon glyphicon-plus"></span>Agregar</button>
 				</div>
 			<br><br>
 		</div>
@@ -57,7 +57,10 @@ var auxId='';
 	$('.select2').select2()
  });
  getAll();
- 
+ function addButton() {
+   $("#textoVerificaEdit").removeClass().text("");
+   $("#textoVerificaAdd").removeClass().text("");
+ }
  //Get all Users
 function getAll(){
 	$.ajax({
@@ -66,7 +69,19 @@ function getAll(){
 		success: function(result) {
 			$.each(result.data, function() {
 				$.each(this, function(index, value) {
-            		var newItem = $("<tr  id='trId_"+value.id+"' role='row' class='odd'><td class='sorting_1'> <input type='hidden'>" + value.nombre + "</td><td>" + value.ruta+" </td><td class='text-right'><button type='button' class='btn btn-default btn-sm'  onclick='editFromTable("+value.id+")' data-href='"+value.id+"'  data-toggle='modal' data-target='#modal-edit' > Editar </button> <button type='button' class='btn btn-default btn-sm'  onclick='deleteFromTable("+value.id+")' data-href='"+value.id+"' data-toggle='modal' data-target='#confirm-modal'> Borrar </button></td></tr>");
+                var newItem = `
+                <tr id='trId_${value.id} role='row' class='odd'>
+                  <td class='sorting_1'> <input type='hidden'>${value.nombre} </td>
+                  <td>${value.ruta}</td>
+                  <td class='text-right'> 
+                    <button type='button' class='btn btn-default btn-sm' 
+                    onclick='editFromTable(${value.id})' data-href="${value.id}"
+                    data-toggle='modal' data-target='#modal-edit' > Editar </button> 
+                    <button type='button' class='btn btn-default btn-sm'  
+                    onclick='deleteFromTable(${value.id})' data-href="${value.id}"
+                    data-toggle='modal' data-target='#confirm-modal'> Borrar </button>
+                  </td>
+                </tr>`;
 					$("#table1 tbody").append(newItem);
 				});
 			});
@@ -148,6 +163,8 @@ function deleteFromTable(id){
 }
 function editFromTable(id){
   auxId=id;
+  $("#textoVerificaEdit").removeClass().text("");
+  $("#textoVerificaAdd").removeClass().text("");
   GetById(auxId);
 }
 //Modal Confirmation when okey
@@ -170,6 +187,28 @@ function clear(){
   $("#nombreEdit").val("");
   $("#rutaEdit").val("");
 }
+// verifica rutas
+
+function verificarRuta (valor, tipo) {// textoVerificaEdit - textoVerificaAdd
+  if(valor!=""){
+    urlVerify = valor+"?token="+localStorage.getItem('token');
+    $.ajax({
+        url:urlVerify,
+        success: function (data) { 
+          if(tipo == 'edit')
+            $("#textoVerificaEdit").addClass("btn btn-success").text("URL VERIFICADA CORRECTAMENTE");
+          else
+            $("#textoVerificaAdd").addClass("btn btn-success").text("URL VERIFICADA CORRECTAMENTE");
+        },
+        error: function (jqXHR, status, er) {
+          if(tipo == 'edit') 
+            $("#textoVerificaEdit").addClass("btn btn-danger").text("URL INCORRECTA");
+          else
+            $("#textoVerificaAdd").addClass("btn btn-danger").text("URL INCORRECTA");
+        }
+    });
+  } 
+}
 </script>
 
 <!-- ADD -->
@@ -189,7 +228,10 @@ function clear(){
           <div class="form-group">
               <label>Ruta</label>
               <input type="text"id="ruta" class="form-control" placeholder="Http://www.example.com">
+              <button class="btn btn-primary" onclick="verificarRuta($('#ruta').val(), 'add')">Verificar</button>
+              <br /><br /><p id="textoVerificaAdd"></p>
           </div>
+          
         </div>
         <div class="modal-footer">
         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
@@ -217,6 +259,8 @@ function clear(){
           <div class="form-group">
               <label>Ruta</label>
               <input type="text"id="rutaEdit" class="form-control" value="">
+              <button class="btn btn-primary" onclick="verificarRuta($('#rutaEdit').val(),'edit')">Verificar</button>
+              <br /><br /><p id="textoVerificaEdit"></p>
           </div>
         </div>
         <div class="modal-footer">

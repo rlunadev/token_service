@@ -33,6 +33,9 @@
 
   <div class="navbar-custom-menu">
     <ul class="nav navbar-nav">
+      <li class="dropdown messages-menu">
+        <a href="#" id="usuarioSistema"></a>
+      </li>
       <!-- Messages: style can be found in dropdown.less-->
       <li class="dropdown messages-menu">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="salirSistema">
@@ -72,9 +75,20 @@ else {
 });
 
 function navigateToOtherModule(name) {
+var urlRedirect = '';
   if(name != 'usuarios')
-  window.location = "http://localhost:8000/proyecto/"+name+"/public/home?token="+localStorage.getItem('token');
+    urlRedirect = "http://localhost:8000/proyecto/"+name+"/public/home?token="+localStorage.getItem('token');
   else
-  window.location = "http://localhost:9000/home?token="+localStorage.getItem('token');
+    urlRedirect = "http://localhost:9000/home?token="+localStorage.getItem('token');
+
+  $.ajax({
+        url:urlRedirect,
+        success: function (data) { 
+            window.location = urlRedirect;
+        },
+        error: function (jqXHR, status, er) {
+          showError( "El dominio  "+ (new URL(urlRedirect)).origin + " no esta disponible.")
+        }
+    });
 } 
 </script>
