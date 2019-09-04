@@ -11,7 +11,6 @@ Route::get('RedirectToServer', 'InicioController@RedirectToServer');
 // Route::post('/', 'AuthController@register');
 Route::post('register', 'AuthController@register');
 Route::post('login', 'AuthController@login');
-Route::post('recover', 'AuthController@recover');
 // get sistema by id 
 Route::post('getSistemaByName', 'SistemasController@getSistemaByName');
 
