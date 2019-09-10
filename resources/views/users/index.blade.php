@@ -251,7 +251,7 @@ $(document).on('click', '#okeyAdd', function (e) {
 			</div>
 			<div class="modal-footer">
 			<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-			<button type="button" class="btn btn-primary">Guardar</button>
+			<button type="button" class="btn btn-primary" id="okeyAdd">Guardar</button>
 			</div>
 		</div>
 	<!-- /.modal-content -->

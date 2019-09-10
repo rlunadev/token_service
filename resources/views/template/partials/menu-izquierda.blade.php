@@ -74,6 +74,7 @@
                   $("#roles").show();
                 } 
          $("#usuarioSistema").html("Hola, "+result.user);
+         $("#msjBienvenido").html("Bienvenido, "+result.user);
         },
         error: function(e) {}
       });

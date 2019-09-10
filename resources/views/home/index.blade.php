@@ -5,8 +5,9 @@
 
 <div class="panel panel-default">
 	<div class="col-md-12" style="background-color:#f5f5f5">
+		<h2 id="msjBienvenido"></h2>
 		<div class="col-md-8">
-			<div class="panel-heading">Tablero</div>
+			<div class="panel-heading"></div>
 		</div>
 		<div class="col-md-4">
       {{-- <button type="button" onclick="window.location='{{ route("users.index") }}'">Button</button> --}}
